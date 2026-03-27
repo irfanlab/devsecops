@@ -78,13 +78,30 @@ java -version
 mvn -v
 
 echo ".........----------------#################._.-.-JENKINS-.-._.#################----------------........."
-wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | gpg --dearmor -o /usr/share/keyrings/jenkins.gpg
-echo 'deb [signed-by=/usr/share/keyrings/jenkins.gpg] http://pkg.jenkins.io/debian-stable binary/' > /etc/apt/sources.list.d/jenkins.list
-apt update
-apt install -y jenkins
+echo ".........----------------#################._.-.-JENKINS-.-._.#################----------------........."
+
+# Remove old broken config (important)
+rm -f /etc/apt/sources.list.d/jenkins.list
+rm -f /usr/share/keyrings/jenkins.gpg
+
+# Add Jenkins key properly
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key \
+  | tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+# Add repo with signed-by
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" \
+  | tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+# Update and install
+apt-get update -y
+apt-get install -y jenkins
+
+# Start Jenkins
 systemctl daemon-reload
 systemctl enable jenkins
 systemctl start jenkins
+
+# Permissions
 usermod -a -G docker jenkins
 echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
