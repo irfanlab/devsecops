@@ -2,32 +2,66 @@
 
 set -eo pipefail
 
-JENKINS_URL='http://localhost:8080'
+JENKINS_URL="http://localhost:8080"
+JENKINS_USER="irfan"
+JENKINS_PASS="irfanirfan"
 
-JENKINS_CRUMB=$(curl -s --cookie-jar /tmp/cookies -u admin:admin ${JENKINS_URL}/crumbIssuer/api/json | jq .crumb -r)
+COOKIE_FILE="/tmp/jenkins_cookies.txt"
 
-JENKINS_TOKEN=$(curl -s -X POST -H "Jenkins-Crumb:${JENKINS_CRUMB}" --cookie /tmp/cookies "${JENKINS_URL}/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken?newTokenName=demo-token66" -u admin:admin | jq .data.tokenValue -r)
+echo "Getting Jenkins crumb..."
 
-echo $JENKINS_URL
-echo $JENKINS_CRUMB
-echo $JENKINS_TOKEN
+CRUMB_RESPONSE=$(curl -s --cookie-jar $COOKIE_FILE \
+  -u "$JENKINS_USER:$JENKINS_PASS" \
+  "$JENKINS_URL/crumbIssuer/api/json")
 
-while read plugin; do
-   echo "........Installing ${plugin} .."
-   curl -s POST --data "<jenkins><install plugin='${plugin}' /></jenkins>" -H 'Content-Type: text/xml' "$JENKINS_URL/pluginManager/installNecessaryPlugins" --user "admin:$JENKINS_TOKEN"
+echo "$CRUMB_RESPONSE" | jq . >/dev/null 2>&1 || {
+  echo "Failed to get crumb:"
+  echo "$CRUMB_RESPONSE"
+  exit 1
+}
+
+JENKINS_CRUMB=$(echo "$CRUMB_RESPONSE" | jq -r .crumb)
+CRUMB_FIELD=$(echo "$CRUMB_RESPONSE" | jq -r .crumbRequestField)
+
+echo "Generating API token..."
+
+TOKEN_RESPONSE=$(curl -s -X POST \
+  -H "$CRUMB_FIELD:$JENKINS_CRUMB" \
+  --cookie $COOKIE_FILE \
+  "$JENKINS_URL/me/descriptorByName/jenkins.security.ApiTokenProperty/generateNewToken?newTokenName=auto-token" \
+  -u "$JENKINS_USER:$JENKINS_PASS")
+
+echo "$TOKEN_RESPONSE" | jq . >/dev/null 2>&1 || {
+  echo "Failed to generate token:"
+  echo "$TOKEN_RESPONSE"
+  exit 1
+}
+
+JENKINS_TOKEN=$(echo "$TOKEN_RESPONSE" | jq -r .data.tokenValue)
+
+echo "Installing plugins..."
+
+while read -r plugin; do
+  [[ -z "$plugin" || "$plugin" =~ ^# ]] && continue
+
+  echo "Installing $plugin..."
+
+  curl -s -X POST \
+    -H "Content-Type: text/xml" \
+    -H "$CRUMB_FIELD:$JENKINS_CRUMB" \
+    --cookie $COOKIE_FILE \
+    --user "$JENKINS_USER:$JENKINS_TOKEN" \
+    --data "<jenkins><install plugin='${plugin}' /></jenkins>" \
+    "$JENKINS_URL/pluginManager/installNecessaryPlugins"
+
 done < plugins.txt
 
+echo "Restarting Jenkins..."
 
-#### we also need to do a restart for some plugins
+curl -s -X POST \
+  -H "$CRUMB_FIELD:$JENKINS_CRUMB" \
+  --cookie $COOKIE_FILE \
+  --user "$JENKINS_USER:$JENKINS_TOKEN" \
+  "$JENKINS_URL/safeRestart"
 
-#### check all plugins installed in jenkins
-# 
-# http://<jenkins-url>/script
-
-# Jenkins.instance.pluginManager.plugins.each{
-#   plugin -> 
-#     println ("${plugin.getDisplayName()} (${plugin.getShortName()}): ${plugin.getVersion()}")
-# }
-
-
-#### Check for updates/errors - http://<jenkins-url>/updateCenter
+echo "Done."
