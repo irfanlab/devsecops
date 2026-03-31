@@ -20,7 +20,7 @@ echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 
 apt-get update
 KUBE_VERSION=$(apt-cache madison kubeadm | head -1 | awk '{print $3}')
-apt-get install -y docker.io vim build-essential jq gnupg python3-pip kubelet kubectl kubernetes-cni kubeadm containerd 
+apt-get install -y jc curl apt-transport-https ca-certificates lsb-release software-properties-common python3 docker.io vim build-essential jq gnupg python3-pip kubelet kubectl kubernetes-cni kubeadm containerd 
 pip3 install jc
 
 ### UUID of VM
