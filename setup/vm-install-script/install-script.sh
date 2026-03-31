@@ -20,7 +20,7 @@ systemctl daemon-reload
 # -------------------------------
 apt-get install -y curl apt-transport-https ca-certificates lsb-release software-properties-common python3 python3-pip jq gnupg
 
-pip3 install jc
+pip3 install jc --break-system-packages
 
 # -------------------------------
 # DOCKER + CONTAINERD
