@@ -20,7 +20,7 @@ echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 
 apt-get update
 KUBE_VERSION=$(apt-cache madison kubeadm | head -1 | awk '{print $3}')
-apt-get install -y docker.io vim build-essential jq python3-pip kubelet kubectl kubernetes-cni kubeadm containerd
+apt-get install -y docker.io vim build-essential jq gnupg python3-pip kubelet kubectl kubernetes-cni kubeadm containerd 
 pip3 install jc
 
 ### UUID of VM
@@ -73,7 +73,7 @@ systemctl enable docker
 
 
 echo ".........----------------#################._.-.-Java and MAVEN-.-._.#################----------------........."
-apt install openjdk-11-jdk maven -y
+apt install openjdk-21-jdk maven -y
 java -version
 mvn -v
 
