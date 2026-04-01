@@ -16,7 +16,7 @@ pipeline {
             post {
                 always {
                     junit 'target/surefire-reports/*.xml'
-                    jacoco execPattern: 'targets/jacoco.exec'
+                    jacoco execPattern: 'target/jacoco.exec'
                 }
             }
         }
@@ -27,7 +27,7 @@ pipeline {
             }
             post {
                 always {
-                    pitest mutationStatsFile: 'target/pit-reports/**/mutations.xml'
+                    pitest mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
                 }
             }
         }
