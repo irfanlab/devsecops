@@ -21,16 +21,6 @@ pipeline {
             }
         }
 
-        stage('Docker Build and Push') {
-             steps {
-                withDockerRegistry([credentialsId: "dockerhub-creds", url: ""], {
-                    sh 'printenv'
-                    sh 'docker build -t irfanlab/numeric-app:""$GIT_COMMIT"" .'
-                    sh 'docker push irfanlab/numeric-app:""$GIT_COMMIT""'
-                })   
-            }
-        }
-
         stage ('Mutation Testing') {
             steps {
                 sh "mvn org.pitest:pitest-maven:mutationCoverage"
@@ -39,6 +29,16 @@ pipeline {
                 always {
                     pitest mutationStatsFile: '**/target/pit-reports/**/mutation.xml'
                 }
+            }
+        }
+
+        stage('Docker Build and Push') {
+             steps {
+                withDockerRegistry([credentialsId: "dockerhub-creds", url: ""], {
+                    sh 'printenv'
+                    sh 'docker build -t irfanlab/numeric-app:""$GIT_COMMIT"" .'
+                    sh 'docker push irfanlab/numeric-app:""$GIT_COMMIT""'
+                })   
             }
         }
 
