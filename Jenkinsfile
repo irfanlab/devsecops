@@ -50,6 +50,17 @@ pipeline {
             }
         }
 
+        stage ('Dependency Scanning - OWASP Dependency Check') {
+            steps {
+                sh "mvn org.owasp:dependency-check-maven:check"
+            }
+            post {
+                always {
+                    dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+                }
+            }
+        }
+
         stage('Docker Build and Push') {
              steps {
                 withDockerRegistry([credentialsId: "dockerhub-creds", url: ""], {
