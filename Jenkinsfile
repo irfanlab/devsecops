@@ -54,11 +54,11 @@ pipeline {
             steps {
                 sh "mvn org.owasp:dependency-check-maven:check"
             }
-            post {
-                always {
-                    dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
-                }
-            }
+            // post {
+            //     always {
+            //         dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+            //     }
+            // }
         }
 
         stage('Docker Build and Push') {
