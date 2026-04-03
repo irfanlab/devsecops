@@ -105,7 +105,14 @@
 			     </dependency>
 			    </dependencies>
 			    <configuration>
-			     <mutationThreshold>70</mutationThreshold>
+			      <mutationThreshold>70</mutationThreshold>
+				  <targetClasses>
+					<param>com.devsecops.*</param>
+				  </targetClasses>
+
+				  <targetTests>
+					<param>com.devsecops.*</param>
+				  </targetTests>
 			     <outputFormats>
 			             <outputFormat>XML</outputFormat>
 			             <outputFormat>HTML</outputFormat>
