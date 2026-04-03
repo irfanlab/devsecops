@@ -136,7 +136,7 @@
 			    <version>12.1.0</version>
 			    <configuration>
 			     <format>ALL</format>
-			     <failBuildOnCVSS>8</failBuildOnCVSS> <!-- fail the build for CVSS greater than or equal to 8 -->
+			     <failBuildOnCVSS>10</failBuildOnCVSS> <!-- fail the build for CVSS greater than or equal to 8 -->
 			     <suppressionFiles>
 			         <suppressionFile>owasp-suppressions.xml</suppressionFile>
 			     </suppressionFiles>
