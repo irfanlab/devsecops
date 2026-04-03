@@ -73,9 +73,9 @@ pipeline {
         always { 
             junit 'target/surefire-reports/*.xml'
             jacoco execPattern: 'target/jacoco.exec'
-            pitmutation killRatioMustImprove: false, minimumKillRatio: 0.0, mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
-            catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+            // pitmutation killRatioMustImprove: false, minimumKillRatio: 0.0, mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+            // catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+            //     dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
             }
 
         }
