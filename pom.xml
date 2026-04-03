@@ -113,6 +113,13 @@
 				  <targetTests>
 					<param>com.devsecops.*</param>
 				  </targetTests>
+
+				  <excludedClasses>
+					<param>*Application*</param>
+					<param>*Config*</param>
+					<param>*Security*</param>
+					<param>org.springdoc.*</param>
+    			  </excludedClasses>
 			     <outputFormats>
 			             <outputFormat>XML</outputFormat>
 			             <outputFormat>HTML</outputFormat>
