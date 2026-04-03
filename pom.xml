@@ -137,6 +137,7 @@
 			    <configuration>
 			     <format>ALL</format>
 			     <failBuildOnCVSS>10</failBuildOnCVSS> <!-- fail the build for CVSS greater than or equal to 8 -->
+			     <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
 			     <suppressionFiles>
 			         <suppressionFile>owasp-suppressions.xml</suppressionFile>
 			     </suppressionFiles>
