@@ -3,9 +3,9 @@
 dockerImageName=$(awk 'NR==1 {print $2}' Dockerfile)
 echo $dockerImageName
 
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy:v0.69.3 -q image --exit-code 1 --severity LOW --light $dockerImageName
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy:v0.69.3 -q image --exit-code 1 --severity HIGH --light $dockerImageName
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy:v0.69.3 -q image --exit-code 1 --severity CRITICAL --light $dockerImageName
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy:0.69.3 -q image --exit-code 1 --severity LOW --light $dockerImageName
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy:0.69.3 -q image --exit-code 1 --severity HIGH --light $dockerImageName
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy:0.69.3 -q image --exit-code 1 --severity CRITICAL --light $dockerImageName
 
     # Trivy scan result processing
     exit_code=$?
