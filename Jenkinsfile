@@ -43,9 +43,22 @@ pipeline {
             }
         }
 
+        // stage ('Dependency Scanning - OWASP Dependency Check') {
+        //     steps {
+        //         sh "mvn org.owasp:dependency-check-maven:check"
+        //     }
+        // }
+
         stage ('Dependency Scanning - OWASP Dependency Check') {
             steps {
-                sh "mvn org.owasp:dependency-check-maven:check"
+                parallel (
+                    "Scan with OWASP Dependency Check": {
+                         sh "mvn org.owasp:dependency-check-maven:check"
+                    },
+                    "Scan with Trivy": {
+                        sh "bash trivy-docker-image-scan.sh"
+                    }
+                )
             }
         }
 
