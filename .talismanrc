@@ -2,7 +2,7 @@ fileignoreconfig:
 - filename: sec_files/file3
   checksum: 6452768e20c07a6bc2a54bd74ea2e2a0a82010bac8dd1057c74f7c97265d6902
 - filename: Jenkinsfile
-  checksum: e5927f954855dc07470830262909dc73347549a4f2500454f9cbdc7d5f4bfc43
+  checksum: 6320b538802e3b214a327e0dea3519e026ca7a54d63e2ff36a2d092b7a84135c
 - filename: pom.xml
   checksum: 05a2ae837cb2781b7bbf84092cc406f38490cc9965a085c23e298f2ecf105cb5
 
