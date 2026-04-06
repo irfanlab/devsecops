@@ -75,6 +75,13 @@ pipeline {
             }
         }
 
+        stage ('OPA ConfTest - Kubernetes Security') {
+            steps {
+                sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest:latest test --policy opa-k8s-security.rego k8s_deployment_service.yaml --all-namespaces'
+            }
+        }
+
+
         stage('Deploy to Kubernetes - Dev') {
             steps {
                 withKubeConfig([credentialsId: 'kubeconfig']) {
