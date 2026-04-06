@@ -86,7 +86,14 @@ pipeline {
 
         stage ('OPA ConfTest - Kubernetes Security') {
             steps {
-                sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest:latest test --policy opa-k8s-security.rego k8s_deployment_service.yaml --all-namespaces'
+                parallel (
+                    "OPA K8s Scan": {
+                    sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest:latest test --policy opa-k8s-security.rego k8s_deployment_service.yaml --all-namespaces'
+                },
+                "Kubesec Scan": {
+                    sh "bash kubesec-scan.sh"
+                }
+                )
             }
         }
 
