@@ -27,7 +27,7 @@ spec:
         #   name: vol
         securityContext:
           runAsNonRoot: true
-        #   runAsUser: 100
+          runAsUser: 100
         #   readOnlyRootFilesystem: true
 ---
 apiVersion: v1
