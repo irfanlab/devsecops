@@ -1,5 +1,7 @@
 package main
 
+import rego.v1
+
 # Do Not store secrets in ENV variables
 secrets_env = [
     "passwd",
@@ -14,7 +16,7 @@ secrets_env = [
     "tkn"
 ]
 
-deny[msg] {    
+deny contains msg if {    
     input[i].Cmd == "env"
     val := input[i].Value
     contains(lower(val[_]), secrets_env[_])
@@ -22,15 +24,15 @@ deny[msg] {
 }
 
 # Only use trusted base images
-#deny[msg] {
+#deny contains msg if {
 #    input[i].Cmd == "from"
 #    val := split(input[i].Value[0], "/")
 #    count(val) > 1
 #    msg = sprintf("Line %d: use a trusted base image", [i])
 #}
 
-# Do not use 'latest' tag for base imagedeny[msg] {
-deny[msg] {
+# Do not use 'latest' tag for base image
+deny contains msg if {
     input[i].Cmd == "from"
     val := split(input[i].Value[0], ":")
     contains(lower(val[1]), "latest")
@@ -38,7 +40,7 @@ deny[msg] {
 }
 
 # Avoid curl bashing
-deny[msg] {
+deny contains msg if {
     input[i].Cmd == "run"
     val := concat(" ", input[i].Value)
     matches := regex.find_n("(curl|wget)[^|^>]*[|>]", lower(val), -1)
@@ -53,7 +55,7 @@ upgrade_commands = [
     "dist-upgrade",
 ]
 
-deny[msg] {
+deny contains msg if {
     input[i].Cmd == "run"
     val := concat(" ", input[i].Value)
     contains(val, upgrade_commands[_])
@@ -61,17 +63,17 @@ deny[msg] {
 }
 
 # Do not use ADD if possible
-deny[msg] {
+deny contains msg if {
     input[i].Cmd == "add"
     msg = sprintf("Line %d: Use COPY instead of ADD", [i])
 }
 
 # Any user...
-any_user {
+any_user if {
     input[i].Cmd == "user"
  }
 
-deny[msg] {
+deny contains msg if {
     not any_user
     msg = "Do not run as root, use USER instead"
 }
@@ -83,7 +85,7 @@ forbidden_users = [
     "0"
 ]
 
-deny[msg] {
+deny contains msg if {
     input[i].Cmd == "user"
     val := input[i].Value
     contains(lower(val[_]), forbidden_users[_])
@@ -91,7 +93,7 @@ deny[msg] {
 }
 
 # Do not sudo
-deny[msg] {
+deny contains msg if {
     input[i].Cmd == "run"
     val := concat(" ", input[i].Value)
     contains(lower(val), "sudo")
