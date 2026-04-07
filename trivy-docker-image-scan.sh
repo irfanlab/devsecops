@@ -16,7 +16,7 @@ echo "Fail threshold set to: $FAIL_ON_SEVERITY"
 scan_failed=0
 
 # LOW severity scan
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy:0.69.3 -q image --exit-code 1 --severity LOW --light $dockerImageName
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ -v $(pwd):/workspace aquasec/trivy:0.69.3 -q image --ignorefile /workspace/.trivyignore --exit-code 1 --severity LOW --light $dockerImageName
 exit_code=$?
 echo "LOW severity scan exit code: $exit_code"
 if [[ "${exit_code}" == 1 ]]; then
@@ -27,7 +27,7 @@ if [[ "${exit_code}" == 1 ]]; then
 fi
 
 # HIGH severity scan
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy:0.69.3 -q image --exit-code 1 --severity HIGH --light $dockerImageName
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ -v $(pwd):/workspace aquasec/trivy:0.69.3 -q image --ignorefile /workspace/.trivyignore --exit-code 1 --severity HIGH --light $dockerImageName
 exit_code=$?
 echo "HIGH severity scan exit code: $exit_code"
 if [[ "${exit_code}" == 1 ]]; then
@@ -38,7 +38,7 @@ if [[ "${exit_code}" == 1 ]]; then
 fi
 
 # CRITICAL severity scan
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy:0.69.3 -q image --exit-code 1 --severity CRITICAL --light $dockerImageName
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ -v $(pwd):/workspace aquasec/trivy:0.69.3 -q image --ignorefile /workspace/.trivyignore --exit-code 1 --severity CRITICAL --light $dockerImageName
 exit_code=$?
 echo "CRITICAL severity scan exit code: $exit_code"
 if [[ "${exit_code}" == 1 ]]; then
