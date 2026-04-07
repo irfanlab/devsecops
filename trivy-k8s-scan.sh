@@ -1,7 +1,7 @@
 #!/bin/bash
 #trivy-k8s-scan
 
-echo $imageName #getting Image name from env variable
+echo $imageName #getting Image name from env variables
 
 docker run --rm -v $WORKSPACE:/root/.cache/ aquasec/trivy:0.69.3 -q image --exit-code 0 --severity LOW,MEDIUM,HIGH --light $imageName
 docker run --rm -v $WORKSPACE:/root/.cache/ aquasec/trivy:0.69.3 -q image --exit-code 1 --severity CRITICAL --light $imageName
