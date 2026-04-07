@@ -128,6 +128,25 @@ pipeline {
         }
     }
 
+    stages {
+        stage('Integration Testing') {
+            steps {
+                script {
+                    try {
+                        withKubeConfig([credentialsId: 'kubeconfig']) {
+                            sh "bash integration-tests.sh"
+                        }
+                    }   catch (e) {
+                        withKubeConfig([credentialsId: 'kubeconfig']) {
+                            sh "kubectl -n default rollout undo deployment {deploymentName}"
+                        }
+                        throw e
+                    }
+                }
+            }
+        }
+    }
+
     post { 
         always { 
             junit 'target/surefire-reports/*.xml'
