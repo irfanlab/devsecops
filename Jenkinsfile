@@ -127,7 +127,6 @@ pipeline {
             }
         }
 
-    stages {
         stage('Integration Testing') {
             steps {
                 script {
@@ -144,7 +143,6 @@ pipeline {
                 }
             }
         }
-    }
     }
 
     post { 
