@@ -1,0 +1,8 @@
+# No fix in 5.7.x, requires Spring 6/Jakarta EE which is a breaking change
+CVE-2026-22732
+
+# No fix in 5.3.x, requires Spring 6/Jakarta EE
+CVE-2016-1000027
+
+# Not using WebFlux / Not applicable
+CVE-2024-38821
