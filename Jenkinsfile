@@ -126,7 +126,6 @@ pipeline {
                 )
             }
         }
-    }
 
     stages {
         stage('Integration Testing') {
@@ -145,6 +144,7 @@ pipeline {
                 }
             }
         }
+    }
     }
 
     post { 
