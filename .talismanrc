@@ -5,4 +5,6 @@ fileignoreconfig:
   checksum: cc162c7ff8b841bddcc9b33edd3c105f7085e000761539e932195810ae664a98
 - filename: pom.xml
   checksum: f7db0952e1df5a9e360e669a5d42a3c749c87d3784e6b64301fd057e6e28275b
+- filename: trivy-docker-image-scan.sh
+  checksum: b971bb26d5c5e516fbd8fe8fb4e4bc226ae09d30f0b55ce819fb2b4f64afd287
 
