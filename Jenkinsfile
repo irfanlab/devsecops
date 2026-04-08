@@ -143,6 +143,14 @@ pipeline {
                 }
             }
         }
+
+        stage('OWASP ZAP Security Testing') {
+            steps {
+                withKubeConfig([credentialsId: 'kubeconfig']) {
+                sh "bash zap.sh"
+                }
+            }
+        }
     }
 
     post { 
