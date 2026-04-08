@@ -163,7 +163,7 @@ pipeline {
             catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                 dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
             }
-
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'OWASP ZAP Report', reportTitles: 'OWASP ZAP Report', useWrapperFileDirectly: true])
         }
     }
 }
