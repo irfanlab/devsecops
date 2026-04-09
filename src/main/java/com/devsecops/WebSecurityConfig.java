@@ -11,5 +11,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
+        http.headers()
+            .addHeaderWriter((request, response) -> {
+                // response.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+                response.setHeader("Cross-Origin-Resource-Policy", "same-origin");
+                response.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+                response.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+            });
     }
 }
