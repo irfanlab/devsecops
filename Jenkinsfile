@@ -155,6 +155,24 @@ pipeline {
                 }
             }
         }
+
+        stage('CIS Benchmark') {
+            steps {
+                script {
+                    parallel(
+                        "Master": {
+                            sh "bash cis-master.sh"
+                        },
+                        "Kubelet": {
+                            sh "bash cis-kubelet.sh"
+                        },
+                        "ETCD": {
+                            sh "bash cis-etcd.sh"
+                        }
+                    )
+                }
+            }
+        }
     }
 
     post { 
