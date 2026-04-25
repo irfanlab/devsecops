@@ -2,7 +2,7 @@ fileignoreconfig:
 - filename: sec_files/file3
   checksum: 6452768e20c07a6bc2a54bd74ea2e2a0a82010bac8dd1057c74f7c97265d6902
 - filename: Jenkinsfile
-  checksum: 24440bc43c53bb899f37bf811a17380ab2d6ed9196efe015625ed217fe76dca3
+  checksum: 0f7211891eb5d1ed863a9abbe857e7ed65db07f0e0cfab8383bc47a01ea19542
 - filename: pom.xml
   checksum: f7db0952e1df5a9e360e669a5d42a3c749c87d3784e6b64301fd057e6e28275b
 - filename: trivy-docker-image-scan.sh
